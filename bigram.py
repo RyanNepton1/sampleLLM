@@ -131,3 +131,22 @@ print(loss)
 # example of generating text with the model
 #idx = torch.zeros((1, 1), dtype=torch.long)  # start with a single token
 print(decode(m.generate(idx=torch.zeros((1, 1), dtype=torch.long), max_new_tokens=100)[0].tolist()))
+
+# create a PyTorch optimizer
+optimizer = torch.optim.AdamW(m.parameters(), lr=1e-3)
+
+batch_size = 32  # increase batch size for better training stability
+for steps in range(10000):
+
+    # sample a  batch of data
+    xb, yb = get_batch('train')
+
+    # evaluate the loss
+    logits, loss = m(xb, yb)
+    optimizer.zero_grad(set_to_none=True)  # zero the gradients
+    loss.backward()  # backpropagation
+    optimizer.step()  # update the model parameters
+
+    print(loss.item())
+
+print(decode(m.generate(idx=torch.zeros((1, 1), dtype=torch.long), max_new_tokens=500)[0].tolist()))
