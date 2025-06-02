@@ -35,3 +35,16 @@ print(data[:1000])  # print the first 1000 characters now in the form GPT tokens
 n = int(0.9 * len(data))  # 90% for training, 10% for validation
 train_data = data[:n]
 val_data = data[n:]
+
+# now for the training loop we need to create a function that generates batches of data
+block_size = 8  # how many characters to predict at once
+train_data[:block_size+1]
+
+# this fuction shows how the modeis trained to predict everything up to block_size. after that requires trucating
+x = train_data[:block_size]
+y = train_data[1:block_size+1]
+for t in range(block_size): # time dimension
+    context = x[:t+1]
+    target = y[t]
+    print(f"when the input is {context}, the target is {target}")
+
